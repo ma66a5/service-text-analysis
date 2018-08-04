@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Service.TextAnalysis.csproj"
+                "${workspaceFolder}/src/Service.TextAnalysis.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -17,7 +17,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Service.TextAnalysis.csproj"
+                "${workspaceFolder}/src/Service.TextAnalysis.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
