@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Amazon.Comprehend;
 using Amazon.Comprehend.Model;
 
@@ -6,10 +7,24 @@ namespace Service.TextAnalysis.Services
 {
     public class AnalyzeSentimentService : IAnalyzeSentimentService
     {
-        public string GetSentiment(string text)
+        public AnalyzeSentimentService(IAmazonComprehend comprehendClient)
         {
-            var comprehendClient = new AmazonComprehendClient(Amazon.RegionEndpoint.USEast2);
-            throw new NotImplementedException();
+            if (comprehendClient == null) throw new ArgumentNullException(nameof(comprehendClient));
+
+            _comprehendClient = comprehendClient;
+        }
+
+        private IAmazonComprehend _comprehendClient;
+
+        public async Task<string> GetSentiment(string text)
+        {
+            var detectSentimentRequest = new DetectSentimentRequest
+            {
+                Text = text,
+                LanguageCode = "en"
+            };
+            var detectSentimentResponse = await _comprehendClient.DetectSentimentAsync(detectSentimentRequest);
+            return detectSentimentResponse.Sentiment;
         }
     }
 }
