@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Service.TextAnalysis.Services
 {
     public interface IAnalyzeSentimentService
     {
-        string GetSentiment(string text);
+        Task<string> GetSentiment(string text);
     }
 }

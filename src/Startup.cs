@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.Comprehend;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,13 @@ namespace Service.TextAnalysis
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            // Create AWS comprehend client singleton.
+            var awsOptions = Configuration.GetAWSOptions();
+            var awsClient = awsOptions.CreateServiceClient<IAmazonComprehend>();
+            services.AddSingleton<IAmazonComprehend>(awsClient);
 
             services.AddSwaggerGen(c =>
             {
@@ -58,6 +66,8 @@ namespace Service.TextAnalysis
             });
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }
