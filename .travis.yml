@@ -9,4 +9,4 @@ branches:
 before_script: cd test
 script:
   - dotnet restore
-  - dotnet test
+  - dotnet test --filter TestCategory!=IgnoreOnBuild
