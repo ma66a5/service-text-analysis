@@ -17,6 +17,7 @@ namespace Service.TextAnalysis.Test.Services
             var service = new AnalyzeSentimentService(null);
         }
 
+        [TestCategory("IgnoreOnBuild")]
         [TestMethod]
         public async Task GetSentimentExecutesAsExpected()
         {
