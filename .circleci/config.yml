@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ./src
+    working_directory: ./service-text-analysis/src
     docker:
       - image: microsoft/aspnetcore-build:latest
     steps:
@@ -10,7 +10,7 @@ jobs:
       - run: dotnet restore
       - run: dotnet build
   test:
-    working_directory: ./test
+    working_directory: ./service-text-analysis/test
     docker:
       - image: microsoft/aspnetcore-build:latest
     steps:
