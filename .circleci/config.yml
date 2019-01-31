@@ -15,7 +15,9 @@ jobs:
       - checkout
       - run: find .
       - run: dotnet restore ./test
-      - run: dotnet test ./test --filter TestCategory!=IgnoreOnBuild
+      - run: dotnet test ./test --filter TestCategory!=IgnoreOnBuild --results-directory ./test/output
+      - store_test_results:
+          path: ./test/output
 workflows:
   version: 2
   build_and_test:
