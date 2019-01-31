@@ -1,22 +1,18 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/service-text-analysis
     docker:
       - image: microsoft/aspnetcore-build:latest
     steps:
-      - checkout:
-        path: ~/service-text-analysis
+      - checkout: ~/src
       - run: find .
       - run: dotnet restore
       - run: dotnet build
   test:
-    working_directory: ~/service-text-analysis
     docker:
       - image: microsoft/aspnetcore-build:latest
     steps:
-      - checkout:
-        path: ~/service-text-analysis
+      - checkout: ./test
       - run: find .
       - run: dotnet restore
       - run: dotnet test --filter TestCategory!=IgnoreOnBuild
