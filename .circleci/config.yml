@@ -4,7 +4,8 @@ jobs:
     docker:
       - image: microsoft/aspnetcore-build:latest
     steps:
-      - checkout: path: ~/src
+      - checkout:
+        ./src
       - run: find .
       - run: dotnet restore
       - run: dotnet build
@@ -12,7 +13,8 @@ jobs:
     docker:
       - image: microsoft/aspnetcore-build:latest
     steps:
-      - checkout: path: ./test
+      - checkout:
+        ./test
       - run: find .
       - run: dotnet restore
       - run: dotnet test --filter TestCategory!=IgnoreOnBuild
