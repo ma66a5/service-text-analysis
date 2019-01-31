@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build:
+    working_directory: ./src
     docker:
       - image: microsoft/aspnetcore-build:latest
     steps:
@@ -9,7 +10,7 @@ jobs:
       - run: dotnet restore
       - run: dotnet build
   test:
-    working_directory: ~/test
+    working_directory: ./test
     docker:
       - image: microsoft/aspnetcore-build:latest
     steps:
