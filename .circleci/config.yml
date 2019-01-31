@@ -16,6 +16,8 @@ jobs:
       - run: find .
       - run: dotnet restore ./test
       - run: dotnet test ./test --filter TestCategory!=IgnoreOnBuild --logger "trx;LogFileName=testResults.xml" --results-directory ./output
+      - store_artifacts:
+          path: ./test/output
       - store_test_results:
           path: ./test/output
 workflows:
