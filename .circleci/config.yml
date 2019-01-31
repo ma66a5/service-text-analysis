@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:-latest
+      - image: microsoft/dotnet-sdk:-latest
     steps:
       - checkout
       - run: find .
@@ -10,7 +10,7 @@ jobs:
       - run: dotnet build ./src
   test:
     docker:
-      - image: microsoft/dotnet:-latest
+      - image: microsoft/dotnet-sdk:-latest
     steps:
       - checkout
       - run: find .
