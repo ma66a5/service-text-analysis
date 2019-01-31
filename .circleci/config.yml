@@ -5,7 +5,7 @@ jobs:
       - image: microsoft/aspnetcore-build:latest
     steps:
       - checkout:
-        path: ./src
+          path: ./src
       - run: find .
       - run: dotnet restore
       - run: dotnet build
@@ -14,7 +14,7 @@ jobs:
       - image: microsoft/aspnetcore-build:latest
     steps:
       - checkout:
-        path: ./test
+          path: ./test
       - run: find .
       - run: dotnet restore
       - run: dotnet test --filter TestCategory!=IgnoreOnBuild
