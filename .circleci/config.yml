@@ -11,7 +11,7 @@ jobs:
   test:
     working_directory: ~/test
     docker:
-      -image: microsoft/aspnetcore-build:2.1
+      - image: microsoft/aspnetcore-build:2.1
     steps:
       - checkout
       - run: find .
