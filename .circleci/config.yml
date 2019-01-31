@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: microsoft/aspnetcore-build:2.1
+    steps:
+      - checkout
+      - run: find .
+      - run: dotnet restore
+      - run: dotnet build
+  test:
+    working_directory: ~/test
+    docker:
+      -image: microsoft/aspnetcore-build:2.1
+    steps:
+      - checkout
+      - run: find .
+      - run: dotnet restore
+      - run: dotnet test --filter TestCategory!=IgnoreOnBuild
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
