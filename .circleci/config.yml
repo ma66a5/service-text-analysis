@@ -6,7 +6,7 @@ jobs:
       - image: microsoft/aspnetcore-build:latest
     steps:
       - checkout:
-        - path: ~/service-text-analysis
+        path: ~/service-text-analysis
       - run: find .
       - run: dotnet restore
       - run: dotnet build
@@ -16,7 +16,7 @@ jobs:
       - image: microsoft/aspnetcore-build:latest
     steps:
       - checkout:
-        - path: ~/service-text-analysis
+        path: ~/service-text-analysis
       - run: find .
       - run: dotnet restore
       - run: dotnet test --filter TestCategory!=IgnoreOnBuild
