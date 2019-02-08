@@ -20,7 +20,6 @@ namespace Service.TextAnalysis
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("https://localhost:4000")
                 .Build();
     }
 }

@@ -20,9 +20,25 @@ jobs:
           path: ./test/output
       - store_test_results:
           path: ./test/output
+    deploy:
+      docker:
+        - image: microsoft/dotnet:2.1-sdk
+      steps:
+        - run:
+            name: Publish to Elastic Beanstalk
+            command: dotnet eb deploy-environment --publish-options "--runtime win-x64"
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
       - test
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
