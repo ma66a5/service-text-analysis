@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Amazon.Comprehend;
 using Amazon.Comprehend.Model;
+using Service.TextAnalysis.Contracts;
 
 namespace Service.TextAnalysis.Services
 {

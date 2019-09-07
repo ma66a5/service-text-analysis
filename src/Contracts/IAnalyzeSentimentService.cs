@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Service.TextAnalysis.Services
+namespace Service.TextAnalysis.Contracts
 {
     public interface IAnalyzeSentimentService
     {

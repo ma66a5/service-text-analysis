@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Service.TextAnalysis.Configuration;
+using Service.TextAnalysis.Contracts;
+using Service.TextAnalysis.Security;
 using Service.TextAnalysis.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -29,12 +31,12 @@ namespace Service.TextAnalysis
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            var mvcBuilder = services.AddMvc();
-            mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var authSettingsSection = Configuration.GetSection("Authentication");
             services.Configure<AuthenticationSettings>(authSettingsSection);
@@ -66,6 +68,7 @@ namespace Service.TextAnalysis
             var awsClient = awsOptions.CreateServiceClient<IAmazonComprehend>();
             services.AddSingleton<IAmazonComprehend>(awsClient);
             services.AddTransient<IAnalyzeSentimentService, AnalyzeSentimentService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
@@ -73,6 +76,16 @@ namespace Service.TextAnalysis
                     Title = "Analyze Sentiment Service",
                     Version = "v1"
                 });
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
+                c.DocumentFilter<SecurityRequirementDocumentFilter>();
             });
         }
 

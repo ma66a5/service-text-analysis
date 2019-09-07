@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.TextAnalysis.Contracts;
 using Service.TextAnalysis.Services;
 
 namespace Service.TextAnalysis.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AnalyzeController : ControllerBase
     {
