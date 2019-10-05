@@ -26,7 +26,7 @@ jobs:
     steps:
       - run:
           name: Publish to Elastic Beanstalk
-          command: dotnet eb deploy-environment --publish-options "--runtime win-x64"
+          command: eb deploy-environment --publish-options "--runtime win-x64"
 workflows:
   version: 2
   build_and_test:
