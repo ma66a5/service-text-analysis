@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services.TextAnalysis.Models;
@@ -6,6 +7,7 @@ using Services.TextAnalysis.Services;
 
 namespace Services.TextAnalysis.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ExternalSiteContentController : ControllerBase
