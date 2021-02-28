@@ -5,5 +5,6 @@ namespace Services.TextAnalysis.Models
         public string Title { get; set; }
         public string Song { get; set; }
         public string Sentiment { get; set; }
+        public string Url { get; set; }
     }
 }

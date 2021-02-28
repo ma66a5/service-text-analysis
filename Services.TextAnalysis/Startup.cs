@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Caching;
+using Polly.Caching.Memory;
+using Polly.Registry;
+using Services.TextAnalysis.Models;
 using Services.TextAnalysis.Services;
 
 namespace Services.TextAnalysis
@@ -32,6 +37,16 @@ namespace Services.TextAnalysis
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o =>
+            {
+                o.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
             services.AddControllers();
 
             var key = Configuration.GetValue<string>("AUTHORIZATION_KEY");
@@ -104,6 +119,21 @@ namespace Services.TextAnalysis
 
             services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
             services.AddAWSService<IAmazonComprehend>();
+
+            services.AddMemoryCache();
+            services.AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
+
+            services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>((serviceProvider) =>
+            {
+                var registry = new PolicyRegistry();
+                registry.Add(Policies.AnalysisResponsePolicy,
+                    Policy.CacheAsync<AnalysisResponse>(
+                        serviceProvider
+                            .GetRequiredService<IAsyncCacheProvider>()
+                            .AsyncFor<AnalysisResponse>(),
+                        TimeSpan.FromMinutes(5)));
+                return registry;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,6 +143,13 @@ namespace Services.TextAnalysis
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Services.TextAnalysis v1"));

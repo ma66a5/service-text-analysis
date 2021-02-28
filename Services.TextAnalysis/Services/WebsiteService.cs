@@ -21,7 +21,8 @@ namespace Services.TextAnalysis.Services
         public async Task<SongResponse> GetContentAsync()
         {
             int randomInt = _random.Next(99999);
-            using var response = await _client.GetAsync(string.Format(LiederUrl, randomInt));
+            var route = string.Format(LiederUrl, randomInt);
+            using var response = await _client.GetAsync(route);
             using var content = response.Content;
 
             var htmlDoc = new HtmlDocument();
@@ -35,7 +36,8 @@ namespace Services.TextAnalysis.Services
             {
                 Title = title,
                 Song = song,
-                LanguageCode = GetLanguageCode(language)
+                LanguageCode = GetLanguageCode(language),
+                Url = $"{_client.BaseAddress}{route}"
             };
         }
 
